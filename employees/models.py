@@ -19,10 +19,8 @@ class Employee(models.Model):
 
 # User → Employee
     user = models.OneToOneField(
-        'accounts.User',
-        on_delete=models.CASCADE
-        
-        
+    'accounts.User',
+    on_delete=models.CASCADE
     )
 
     employee_id = models.CharField(
@@ -64,16 +62,16 @@ class Employee(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-def clean(self):
-    if self.joining_date and self.joining_date > timezone.localdate():
-        raise ValidationError({
-            'joining_date': 'Joining date cannot be in the future.'
-        })
+    def clean(self):
+        if self.joining_date and self.joining_date > timezone.localdate():
+            raise ValidationError({
+                'joining_date': 'Joining date cannot be in the future.'
+            })
 
-    if self.manager and self.manager == self:
-        raise ValidationError({
-            'manager': 'An employee cannot be their own manager.'
-        })
+        if self.manager and self.manager == self:
+            raise ValidationError({
+                'manager': 'An employee cannot be their own manager.'
+            })
 
-def __str__(self):
-    return f"{self.employee_id} - {self.first_name}"
+    def __str__(self):
+        return f"{self.employee_id} - {self.first_name}"

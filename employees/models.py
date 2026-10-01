@@ -1,5 +1,7 @@
 
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 
 class Department(models.Model):
@@ -15,9 +17,12 @@ class Employee(models.Model):
         ('INACTIVE', 'Inactive'),
     ]
 
+# User → Employee
     user = models.OneToOneField(
         'accounts.User',
         on_delete=models.CASCADE
+        
+        
     )
 
     employee_id = models.CharField(
@@ -32,6 +37,8 @@ class Employee(models.Model):
 
     joining_date = models.DateField()
 
+#Department → Employees
+
     department = models.ForeignKey(
         Department,
         on_delete=models.PROTECT,
@@ -40,6 +47,7 @@ class Employee(models.Model):
 
     designation = models.CharField(max_length=100)
 
+# Manager → Team members
     manager = models.ForeignKey(
         'self',
         on_delete=models.SET_NULL,
@@ -56,5 +64,16 @@ class Employee(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"{self.employee_id} - {self.first_name}"
+def clean(self):
+    if self.joining_date and self.joining_date > timezone.localdate():
+        raise ValidationError({
+            'joining_date': 'Joining date cannot be in the future.'
+        })
+
+    if self.manager and self.manager == self:
+        raise ValidationError({
+            'manager': 'An employee cannot be their own manager.'
+        })
+
+def __str__(self):
+    return f"{self.employee_id} - {self.first_name}"

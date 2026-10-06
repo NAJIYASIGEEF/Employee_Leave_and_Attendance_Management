@@ -50,6 +50,18 @@ class Attendance(models.Model):
                 name='unique_employee_attendance_date'
             )
         ]
+        
+    @property
+    def working_hours(self):
+        if self.check_in and self.check_out:
+            from datetime import datetime
+
+            start = datetime.combine(self.date, self.check_in)
+            end = datetime.combine(self.date, self.check_out)
+
+            return end - start
+
+        return None
 
     def __str__(self):
         return f"{self.employee.employee_id} - {self.date}"

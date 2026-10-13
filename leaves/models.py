@@ -46,6 +46,16 @@ class LeaveBalance(models.Model):
     @property
     def remaining_days(self):
         return self.allocated_days - self.used_days
+    
+    
+    def clean(self):
+        from django.core.exceptions import ValidationError
+
+        if self.used_days > self.allocated_days:
+            raise ValidationError({
+                'used_days': 'Used leave days cannot exceed allocated leave days.'
+            })
+
 
     def __str__(self):
         return f"{self.employee.employee_id} - {self.leave_type.name} - {self.year}"

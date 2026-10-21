@@ -14,6 +14,37 @@
         <h1>Employee Management Dashboard</h1>
         <p>Welcome, {{ request.user.username }}!</p>
         <p>Your role: <strong>{{ request.user.role }}</strong></p>
+        
+<hr>
+
+
+{% if request.user.role == 'ADMIN' %}
+    <h3>Admin Panel</h3>
+    <p>Manage users, employees, and departments.</p>
+
+    <a href="{% url 'admin:index' %}" class="btn btn-primary mt-2">
+        Open Admin Site
+    </a>
+
+
+{% elif request.user.role == 'HR' %}
+    <h3>HR Panel</h3>
+    <p>Manage employee records and leave requests.</p>
+
+{% elif request.user.role == 'MANAGER' %}
+    <h3>Manager Panel</h3>
+    <p>Review and approve employee leave requests.</p>
+
+{% elif request.user.role == 'EMPLOYEE' %}
+    <h3>Employee Panel</h3>
+    <p>Apply for leave and view your attendance.</p>
+
+{% endif %}
+
+
+<a href="{% url 'home' %}" class="btn btn-secondary mt-3">
+    Home
+</a>
 
         <a href="{% url 'logout' %}" class="btn btn-danger">
             Logout

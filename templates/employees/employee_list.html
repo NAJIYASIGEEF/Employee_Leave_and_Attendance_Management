@@ -22,6 +22,7 @@
                             <th>Department</th>
                             <th>Designation</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,6 +33,12 @@
                             <td>{{ employee.department.name }}</td>
                             <td>{{ employee.designation }}</td>
                             <td>{{ employee.get_employment_status_display }}</td>
+                            <td>
+    <a href="{% url 'employee_detail' employee.id %}"
+       class="btn btn-primary btn-sm">
+        View Details
+    </a>
+</td>
                         </tr>
                         {% empty %}
                         <tr>

@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 
+
 class Department(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
